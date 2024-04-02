@@ -1,18 +1,23 @@
 {
   "extends": "plasmo/templates/tsconfig.base",
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "include": [
     ".plasmo/index.d.ts",
     "./**/*.ts",
-    "./**/*.tsx"
+    "./**/*.tsx",
+    "components/TodoItem.jsx",
+    "components/ui/button.jsx",
+    "components/ui/input.jsx",
+    "components/ui/dropdown-menu.jsx",
+    "components/ui/checkbox.jsx",
+    "components/theme-provider.jsx",
+    "components/NewTodo.jsx",
+    "components/ModeToggle.jsx"
   ],
   "compilerOptions": {
     "paths": {
-      "~*": [
-        "./*"
-      ]
+      "~*": ["./*"],
+      "@/*": ["./*"]
     },
     "baseUrl": "."
   }
