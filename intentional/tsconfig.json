@@ -14,7 +14,8 @@
     "components/NewTodo.jsx",
     "components/ModeToggle.jsx",
     "components/TodoList.jsx",
-    "tabs/Todo.jsx"
+    "tabs/Page.jsx",
+    "content.tsx"
   ],
   "compilerOptions": {
     "paths": {

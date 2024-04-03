@@ -1,6 +1,19 @@
+import cssText from "data-text:~style.css"
+import { useTheme } from "next-themes"
 import OpenAI from "openai"
+import { useEffect, useState } from "react"
 
 import { Storage } from "@plasmohq/storage"
+
+import { ModeToggle } from "~components/ModeToggle"
+import { ThemeProvider } from "~components/theme-provider"
+import TodoList from "~components/TodoList"
+
+export const getStyle = () => {
+  const style = document.createElement("style")
+  style.textContent = cssText
+  return style
+}
 
 export {}
 
@@ -46,16 +59,32 @@ info = {
   )
 }
 
-// storage.get("todos").then((todos) => {
-//   console.log(todos)
-//   askGPT(info, todos).then((response) => {
-//     if (response) {
-//       const { relevant, "to-do item": todo } = JSON.parse(response)
-//       if (relevant) {
-//         alert(`This page is relevant to the following to-do item : ${todo}`)
-//       } else {
-//         alert("This page is not relevant to any of your to-do items")
-//       }
-//     }
-//   })
-// })
+export default function content() {
+  const { theme, setTheme } = useTheme()
+  const [relevant, setRelevant] = useState(true)
+  useEffect(() => {
+    storage.get("todos").then((todos) => {
+      console.log(todos)
+      askGPT(info, todos).then((response) => {
+        if (response) {
+          const data = JSON.parse(response)
+          if (data.relevant == false) {
+            setRelevant(false)
+            document.body = document.createElement("body")
+          }
+        }
+      })
+    })
+  }, [])
+  if (relevant) return <></>
+  return (
+    <div
+      className={`dark fixed bg-black text-white w-screen h-screen z-100 flex flex-col  items-center`}>
+      <h1 className="text-xl  my-6 font-bold">intentional</h1>
+      <h1 className=" text-xl font-medium max-w-md my-20">
+        It seems that this page isn't relevant to any of your to-do items :(
+      </h1>
+      <TodoList />
+    </div>
+  )
+}

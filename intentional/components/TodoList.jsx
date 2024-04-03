@@ -7,7 +7,6 @@ import { TodoItem } from "./TodoItem"
 
 export default function TodoList() {
   const [todos, setTodos] = useStorage("todos")
-  console.log(todos)
   return (
     // <div>hello</div>
     <div className="  w-[80%] max-w-md  flex flex-col gap-4">
