@@ -12,7 +12,9 @@
     "components/ui/checkbox.jsx",
     "components/theme-provider.jsx",
     "components/NewTodo.jsx",
-    "components/ModeToggle.jsx"
+    "components/ModeToggle.jsx",
+    "components/TodoList.jsx",
+    "tabs/Todo.jsx"
   ],
   "compilerOptions": {
     "paths": {

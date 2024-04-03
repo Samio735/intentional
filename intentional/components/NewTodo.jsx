@@ -3,11 +3,11 @@ import { Input } from "./ui/input"
 export function NewTodo({ setTodos }) {
   const addTodo = (e) => {
     if (e.key === "Enter") {
-      setTodos((todos) => [
-        { text: e.target.value, completed: false },
+      setTodos((todos) => {
+        if (todos) return [{ text: e.target.value, completed: false }, ...todos]
 
-        ...todos
-      ])
+        return [{ text: e.target.value, completed: false }]
+      })
       e.target.value = ""
     }
   }

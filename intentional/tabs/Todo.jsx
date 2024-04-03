@@ -16,7 +16,7 @@ export default function Home() {
         disableTransitionOnChange>
         <div className=" flex flex-col items-center ">
           <ModeToggle />
-          <h1 className="text-xl  my-6 font-bold">Intentional</h1>
+          <h1 className="text-xl  my-6 font-bold">intentional</h1>
           <TodoList />
         </div>
       </ThemeProvider>

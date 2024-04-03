@@ -1,21 +1,25 @@
 "use client"
 
-
 import { useState } from "react"
 
 import { Checkbox } from "~components/ui/checkbox"
 
-export function TodoItem({ text }) {
-  const [completed, setCompleted] = useState(false)
-  const [deleted, setDeleted] = useState(false)
-  if (deleted) return null
+export function TodoItem({ text, completed, setTodos }) {
   return (
     <div className="grid grid-cols-10 gap-1  justify-between items-start w-full group ">
       <div className="flex col-span-9 gap-2 ">
         <Checkbox
           checked={completed}
           onCheckedChange={() => {
-            setCompleted(!completed)
+            setTodos((todos) => {
+              const newTodos = todos.map((todo) => {
+                if (todo.text === text) {
+                  return { text: todo.text, completed: !todo.completed }
+                }
+                return todo
+              })
+              return newTodos
+            })
           }}
           id={text}
         />
@@ -29,7 +33,12 @@ export function TodoItem({ text }) {
       </div>
       <div
         className="hidden group-hover:flex opacity-60 hover:opacity-100 w-4 h-4 "
-        onClick={() => setDeleted(true)}>
+        onClick={() =>
+          setTodos((todos) => {
+            const newTodos = todos.filter((todo) => todo.text !== text)
+            return newTodos
+          })
+        }>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
