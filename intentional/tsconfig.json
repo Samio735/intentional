@@ -5,17 +5,19 @@
     ".plasmo/index.d.ts",
     "./**/*.ts",
     "./**/*.tsx",
-    "components/TodoItem.jsx",
+    "components/TodoItem.tsx",
     "components/ui/button.jsx",
-    "components/ui/input.jsx",
+    "components/ui/input.tsx",
     "components/ui/dropdown-menu.jsx",
     "components/ui/checkbox.jsx",
     "components/theme-provider.jsx",
-    "components/NewTodo.jsx",
+    "components/NewTodo.tsx",
     "components/ModeToggle.jsx",
-    "components/TodoList.jsx",
+    "components/TodoList.tsx",
     "tabs/Page.jsx",
-    "content.tsx"
+    "content.tsx",
+    "background/index.js",
+    "components/Intentions.js"
   ],
   "compilerOptions": {
     "paths": {

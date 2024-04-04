@@ -3,16 +3,17 @@
 import { useState } from "react"
 
 import { Checkbox } from "~components/ui/checkbox"
+import type { Intention, Todo } from "~types"
 
-export function TodoItem({ text, completed, setTodos }) {
+export function TodoItem({ text, completed, setIntention }) {
   return (
     <div className="grid grid-cols-10 gap-1  justify-between items-start w-full group ">
       <div className="flex col-span-9 gap-2 ">
         <Checkbox
           checked={completed}
           onCheckedChange={() => {
-            setTodos((todos) => {
-              const newTodos = todos.map((todo) => {
+            setIntention((intention: Intention) => {
+              const newTodos = intention.todos.map((todo: Todo) => {
                 if (todo.text === text) {
                   return { text: todo.text, completed: !todo.completed }
                 }
@@ -34,8 +35,10 @@ export function TodoItem({ text, completed, setTodos }) {
       <div
         className="hidden group-hover:flex opacity-60 hover:opacity-100 w-4 h-4 "
         onClick={() =>
-          setTodos((todos) => {
-            const newTodos = todos.filter((todo) => todo.text !== text)
+          setIntention((intention) => {
+            const newTodos = intention.todos.filter(
+              (todo: Todo) => todo.text !== text
+            )
             return newTodos
           })
         }>
