@@ -5,7 +5,6 @@ import type { Intention, Todo } from "~types"
 import { Input } from "./ui/input"
 
 // aaaaaaa
-console.log("azbi")
 export function NewTodo({
   setIntention,
   intention
@@ -28,7 +27,6 @@ export function NewTodo({
               const newTodos = [...(intention?.todos || []), newTodo]
               return { ...intention, todos: newTodos }
             })
-            console.log("hihi")
             sendToBackground({
               name: "check-todo",
               body: {

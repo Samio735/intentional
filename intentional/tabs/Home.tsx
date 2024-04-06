@@ -1,6 +1,6 @@
 import "../style.css"
 
-import ActivityCalendar from "~src"
+import ActivityCalendar from "~src2"
 
 import Intentions from "../components/Intentions"
 import TodoList from "../components/TodoList"
