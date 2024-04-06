@@ -16,7 +16,7 @@
     "components/TodoList.tsx",
     "tabs/Page.jsx",
     "content.tsx",
-    "background/index.js",
+    "background/index.ts",
     "components/Intentions.js"
   ],
   "compilerOptions": {

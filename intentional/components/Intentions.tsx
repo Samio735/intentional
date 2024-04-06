@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 
+import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
 
 import type { Intention } from "~types"
@@ -26,19 +27,31 @@ export default function Intentions() {
       return
     }
 
-    setIntention({
-      name: intentionName,
-      duration: intentionHours * 60 * 60 + intentionMinutes * 60
+    setIntention((intention: Intention) => {
+      return {
+        name: intentionName,
+        duration: intentionHours * 60 * 60 + intentionMinutes * 60,
+        todos: intention?.todos
+      }
     })
   }
-  const [intention, setIntention] = useStorage<Intention>("intention")
+  const [intention, setIntention] = useStorage({
+    key: "intention",
+    instance: new Storage({
+      area: "local"
+    })
+  })
   const [intentionName, setIntentionName] = useState("")
   const [intentionHours, setIntentionHours] = useState(1)
   const [intentionMinutes, setIntentionMinutes] = useState(30)
   const { toast } = useToast()
-  if (!intention) {
+  // console.log(intention)
+  if (!intention?.name) {
     return (
-      <div className="flex w-[80vw] max-w-md my-10  flex-col gap-6 min-w-60 ">
+      <div className="flex my-10  flex-col gap-6  ">
+        <div className="flex flex-col justify-start gap-2">
+          <h1 className="text-xl font-bold">Start a deep work session</h1>
+        </div>
         <div className="flex flex-col justify-start gap-2">
           <div className="flex gap-1">
             <TooltipProvider>
@@ -50,8 +63,8 @@ export default function Intentions() {
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>
-                    The name you choose now determine the tasks you can add
-                    later
+                    The name you choose now determines the tasks you can add and
+                    the websites that you can later
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -94,26 +107,12 @@ export default function Intentions() {
             <Label htmlFor="minutes">minutes</Label>
           </div>
         </div>
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-1">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  {" "}
-                  <Label htmlFor="">
-                    What tasks do you want to accomplish ?
-                  </Label>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>
-                    The tasks you choose now determine the tasks you can add
-                    later
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        </div>
+
+        {/* <div className="flex flex-col gap-4">
+          {" "}
+          <Label htmlFor="hours">Sub-tasks to accomplish</Label>
+          <TodoList />
+        </div> */}
         <Button
           onClick={() => {
             submitIntention()
@@ -126,7 +125,7 @@ export default function Intentions() {
   }
   return (
     <div className="flex w-[80vw] max-w-md my-10  flex-col gap-6 min-w-60 ">
-      <h1 className="text-xl font-medium ">You are currently working on : </h1>
+      <h1 className="text-xl font-bold">Current deep work session</h1>
       <div className="flex gap-2">
         <Input
           id="intention"
@@ -170,18 +169,26 @@ export default function Intentions() {
           )}
         </Button>
       </div>
-      <p className="text-xl">
-        Time Left :{" "}
-        {intention.duration > 60 * 60
-          ? Math.floor(intention.duration / 60 / 60) + "h"
-          : ""}
-        {Math.floor(
-          intention.duration -
-            Math.floor(intention.duration / 60 / 60) * 60 * 60
-        ) / 60}
-        min
+      <p className="text-lg font-medium">
+        {intention.duration > 0
+          ? ` Time Left : ${
+              intention.duration > 60 * 60
+                ? Math.floor(intention.duration / 60 / 60) + "h"
+                : ""
+            }
+        ${Math.floor(
+          (intention.duration -
+            Math.floor(intention.duration / 60 / 60) * 60 * 60) /
+            60
+        )}
+        min`
+          : "Time ended"}
       </p>
-      <TodoList />
+      <div className="flex  flex-col gap-4">
+        {" "}
+        <Label htmlFor="hours text-lg">Sub-tasks to accomplish</Label>
+        <TodoList />
+      </div>
       {!intention.locked && (
         <Button onClick={() => setIntention(null)}>End</Button>
       )}{" "}

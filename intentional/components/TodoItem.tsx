@@ -5,9 +5,11 @@ import { useState } from "react"
 import { Checkbox } from "~components/ui/checkbox"
 import type { Intention, Todo } from "~types"
 
-export function TodoItem({ text, completed, setIntention }) {
+export function TodoItem({ text, completed, setIntention, pending = true }) {
   return (
-    <div className="grid grid-cols-10 gap-1  justify-between items-start w-full group ">
+    <div
+      className={`grid grid-cols-10 gap-1 ${pending && "animate-pulse opacity-80"} justify-between items-start w-full group `}>
+      {" "}
       <div className="flex col-span-9 gap-2 ">
         <Checkbox
           checked={completed}
@@ -35,11 +37,11 @@ export function TodoItem({ text, completed, setIntention }) {
       <div
         className="hidden group-hover:flex opacity-60 hover:opacity-100 w-4 h-4 "
         onClick={() =>
-          setIntention((intention) => {
+          setIntention((intention: Intention) => {
             const newTodos = intention.todos.filter(
               (todo: Todo) => todo.text !== text
             )
-            return newTodos
+            return { ...intention, todos: newTodos }
           })
         }>
         <svg
