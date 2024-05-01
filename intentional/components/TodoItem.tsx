@@ -17,11 +17,11 @@ export function TodoItem({ text, completed, setIntention, pending = true }) {
             setIntention((intention: Intention) => {
               const newTodos = intention.todos.map((todo: Todo) => {
                 if (todo.text === text) {
-                  return { text: todo.text, completed: !todo.completed }
+                  return { ...todo, completed: !todo.completed }
                 }
                 return todo
               })
-              return newTodos
+              return { ...intention, todos: newTodos }
             })
           }}
           id={text}

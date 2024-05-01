@@ -1,5 +1,7 @@
 import { useState } from "react"
 
+import Intentions from "~components/Intentions"
+
 function IndexPopup() {
   const [data, setData] = useState("")
 
@@ -8,7 +10,7 @@ function IndexPopup() {
       style={{
         padding: 16
       }}>
-      <h2>It's Samy !</h2>
+      <Intentions></Intentions>
     </div>
   )
 }

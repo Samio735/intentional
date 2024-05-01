@@ -3,6 +3,7 @@ import { sendToBackground } from "@plasmohq/messaging"
 import type { Intention, Todo } from "~types"
 
 import { Input } from "./ui/input"
+import { useToast } from "./ui/use-toast"
 
 // aaaaaaa
 export function NewTodo({
@@ -12,6 +13,7 @@ export function NewTodo({
   setIntention: any
   intention: Intention
 }) {
+  const { toast } = useToast()
   return (
     <div className="opacity-50 hover:opacity-100">
       <Input
@@ -34,7 +36,33 @@ export function NewTodo({
                 todo: newTodo.text
               }
             }).then((res) => {
-              console.log(res)
+              const relevant = res?.data?.relevant
+              console.log("relevant", relevant)
+              if (relevant) {
+                setIntention((intention: Intention) => {
+                  const newTodos =
+                    intention?.todos.map((todo) => {
+                      if (todo.text == newTodo.text) todo.pending = false
+                      return todo
+                    }) || []
+                  return { ...intention, todos: newTodos }
+                })
+              } else if (res?.data?.error) {
+                toast({
+                  title: "Error checking task"
+                })
+              } else {
+                setIntention((intention: Intention) => {
+                  const newTodos =
+                    intention?.todos.filter(
+                      (todo) => todo.text !== newTodo.text
+                    ) || []
+                  return { ...intention, todos: newTodos }
+                })
+                toast({
+                  title: "Task is not relevant"
+                })
+              }
             })
             // setTimeout(
             //   () => {

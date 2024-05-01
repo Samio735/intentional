@@ -2,7 +2,7 @@ import { Storage } from "@plasmohq/storage"
 
 import type { Intention } from "~types"
 
-const storage = new Storage()
+const storage = new Storage({ area: "local" })
 
 setInterval(async () => {
   const intention: Intention = await storage.get("intention")

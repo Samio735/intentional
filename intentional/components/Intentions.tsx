@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 
+import { sendToBackground } from "@plasmohq/messaging"
+import { getPort } from "@plasmohq/messaging/port"
 import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
 
@@ -18,7 +20,7 @@ import {
 } from "./ui/tooltip"
 import { useToast } from "./ui/use-toast"
 
-export default function Intentions() {
+export default function Intentions({}) {
   function submitIntention() {
     if (intentionName === "") {
       toast({
@@ -32,6 +34,12 @@ export default function Intentions() {
         name: intentionName,
         duration: intentionHours * 60 * 60 + intentionMinutes * 60,
         todos: intention?.todos
+      }
+    })
+    const port = getPort("intention-changed")
+    port.postMessage({
+      body: {
+        msg: "Intention has changed"
       }
     })
   }
@@ -119,7 +127,6 @@ export default function Intentions() {
           }}>
           Start
         </Button>
-        <Toaster />
       </div>
     )
   }
@@ -190,7 +197,15 @@ export default function Intentions() {
         <TodoList />
       </div>
       {!intention.locked && (
-        <Button onClick={() => setIntention(null)}>End</Button>
+        <Button
+          onClick={() =>
+            setIntention(null).then(() => {
+              // reload the page
+              window.location.reload()
+            })
+          }>
+          End
+        </Button>
       )}{" "}
     </div>
   )
