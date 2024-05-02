@@ -10,6 +10,9 @@ import { useStorage } from "@plasmohq/storage/hook"
 import Intentions from "~components/Intentions"
 import TodoList from "~components/TodoList"
 
+const storage = new Storage({
+  area: "local"
+})
 export const getStyle = () => {
   const style = document.createElement("style")
   style.textContent = cssText
@@ -20,12 +23,21 @@ export {}
 // url, title, heading all subheadings like h1 h2 h3 ...
 let info = {
   url: document.URL,
-  title: document.title,
+  title: document.title.substring(0, 100),
   heading: document.querySelector("h1")?.textContent,
-  subheadings: Array.from(document.querySelectorAll("h2, h3, h4, h5, h6")).map(
-    (el) => el.textContent
-  )
+  subheadings: Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"))
+    .filter((el) => el.textContent.length > 10)
+    .map((el) => el.textContent)
 }
+
+storage.watch({
+  intention: (c) => {
+    console.log(c)
+    if (!c.oldValue) {
+      location.reload()
+    }
+  }
+})
 
 export default function content() {
   const [relevant, setRelevant] = useState(true)
@@ -40,7 +52,7 @@ export default function content() {
         if (res.reload) {
           location.reload()
         }
-        console.log(info)
+        console.log(JSON.stringify(info).substring(0, 1000))
         console.log(res)
         console.log(res.data.relevant)
         if (res.data.relevant == false) {
@@ -50,10 +62,6 @@ export default function content() {
       })
     }, 1000)
   }
-  const port = getPort("intention-changed")
-  port.onMessage.addListener((msg) => {
-    checkRelevance()
-  })
 
   useEffect(() => {
     checkRelevance()

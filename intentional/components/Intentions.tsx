@@ -42,6 +42,9 @@ export default function Intentions({}) {
         msg: "Intention has changed"
       }
     })
+    port.onMessage.addListener((msg) => {
+      console.log(msg)
+    })
   }
   const [intention, setIntention] = useStorage({
     key: "intention",
@@ -198,13 +201,14 @@ export default function Intentions({}) {
       </div>
       {!intention.locked && (
         <Button
+          variant="destructive"
           onClick={() =>
             setIntention(null).then(() => {
               // reload the page
               window.location.reload()
             })
           }>
-          End
+          End intention
         </Button>
       )}{" "}
     </div>
